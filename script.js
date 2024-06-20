@@ -1,4 +1,6 @@
 function DatosUsuario() {
+    let usuarios = [];
+
     let usuario = {
         nombre: "",
         edad: 0,
@@ -25,21 +27,25 @@ function DatosUsuario() {
 
             if (this.edad >= 18) {
                 console.log("¡Bienvenida/o " + this.nombre + "!");
-            } else {
+            } 
+            else {
                 console.log("Lo sentimos, no eres mayor de edad...");
-                return;
             }
         },
 
-        function : esMayorDeEdad(objEdad) 
-            return objEdad.edad >= 18;
+        obtenerCiudad: function() {
+            while (this.ciudadUsuario === "BARCELONA" && this.ciudadUsuario === "MADRID") {
+                this.ciudadUsuario = prompt("Ingresa tu ciudad: BARCELONA o MADRID").toUpperCase();
+
+                if (this.ciudadUsuario === "BARCELONA" || this.ciudadUsuario === "MADRID") {
+                    break;
+                } 
+                else {
+                    console.log("Ciudad inválida, inténtalo de nuevo");
+                }
             }
-        
-
-        let resultadoFilter = edadUsuario.filter (esMayorDeEdad);
-        console.log(resultadoFilter);
-
-
+        },
+    
         tipoDeEntrada: function() {
             this.tipoEntradas = prompt("Ingresa el tipo de entrada GENERAL o VIP").toUpperCase();
 
@@ -61,7 +67,6 @@ function DatosUsuario() {
                     console.log("Número de entradas inválido");
                     intentoEntradas += 1;
                 }
-
                 if (intentoEntradas === 3) {
                     console.log("Has alcanzado el máximo de intentos para ingresar el número de entradas");
                     return;
@@ -74,7 +79,8 @@ function DatosUsuario() {
 
             if (this.tipoEntradas === "GENERAL") {
                 total = 40 * this.cantidadEntradas;
-            } else if (this.tipoEntradas === "VIP") {
+            } 
+            else if (this.tipoEntradas === "VIP") {
                 total = 100 * this.cantidadEntradas;
             }
 
@@ -91,11 +97,11 @@ function DatosUsuario() {
                     if (this.fecha === "05/06/24" || this.fecha === "10/06/24") {
                         this.mail = prompt("Ingresa tu correo electrónico y se te enviará un enlace para realizar el pago");
                         console.log("¡Gracias!");
-                        return true; 
+                        return false;
                     } 
                     else {
                         console.log("Fecha incorrecta");
-                        return false; 
+                        return true;
                     }
                 });
             } 
@@ -110,7 +116,7 @@ function DatosUsuario() {
         contIntentos: function(procesoIntentos, maxIntentos = 3) {
             let intentos = 0;
             while (intentos < maxIntentos) {
-                if (procesoIntentos(intentos)) {
+                if (!procesoIntentos(intentos)) {
                     return;
                 }
                 intentos += 1;
@@ -129,13 +135,33 @@ function DatosUsuario() {
         return;
     }
 
+    usuario.obtenerCiudad();
     usuario.tipoDeEntrada();
     usuario.cantidadDeEntradas();
 
     if (!isNaN(usuario.cantidadEntradas) && usuario.cantidadEntradas > 0 && usuario.cantidadEntradas <= 20) {
         usuario.calcularEntradas();
         usuario.confirmarPago();
+
+        let usuarioCompleto = {
+            nombre: usuario.nombre,
+            edad: usuario.edad,
+            ciudadUsuario: usuario.ciudadUsuario,
+            tipoEntradas: usuario.tipoEntradas,
+            cantidadEntradas: usuario.cantidadEntradas,
+            mail: usuario.mail,
+            fecha: usuario.fecha
+        };
+
+        usuarios.push(usuarioCompleto);
     }
+
+    console.log("Usuarios:");
+    
+    usuarios.forEach(function(usuario) {
+        console.log(usuario);
+    });
+    
 }
 
 DatosUsuario();
